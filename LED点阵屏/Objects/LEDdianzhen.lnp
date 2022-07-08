@@ -1,0 +1,5 @@
+".\Objects\main.obj",
+".\Objects\delay.obj",
+".\Objects\timing.obj" 
+TO ".\Objects\LEDdianzhen" 
+PRINT(".\Listings\LEDdianzhen.m51") RAMSIZE(256) 
