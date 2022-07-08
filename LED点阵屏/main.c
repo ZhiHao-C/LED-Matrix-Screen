@@ -10,19 +10,19 @@ unchar j=0;
 unchar time;
 unchar a[]={0x00,0x00,0x7F,0x08,0x08,0x7F,0x00,0x1E,0x21,0x29,0x29,0x11,0x00,0x7E,0x01,0x02,0x00,0x7E,
 0x01,0x02,0x00,0x1E,0x21,0x21,0x1E,0x00,0x00,0x00,0x7D,0x00,0x00,0x7F,0x08,0x08,
-0x7F,0x00,0x1E};
+0x7F,0x00,0x1E};                 //è¦æ»šåŠ¨çš„æ–‡å­—æŒ‰ä¸€åˆ—ä¸€åˆ—æ˜¾ç¤ºæ’åˆ—
 
 void timing()interrupt 1
 {
 	TF0 = 0;
-	TL0 = 0x00;		//ÉèÖÃ¶¨Ê±³õÖµ:50ms
+	TL0 = 0x00;		//è®¾ç½®å®šæ—¶åˆå€¼:50ms
 	TH0 = 0x4C;
 	time++;
-	if(time>=20)
+	if(time>=20)            //1ç§’ä¸­æ–­
 	{
 		time=0;
 		c++;
-		if(c>28)
+		if(c>28)        //cæ§åˆ¶ç¬¬jåˆ—æ˜¾ç¤ºaã€cã€‘
 		{
 			c=0;
 		}
@@ -30,25 +30,25 @@ void timing()interrupt 1
 	
 }
 
-void _74HC595_writebyte(unchar byte)//74595Ğ´ÈëÊı¾İ
+void _74HC595_writebyte(unchar byte)//74595å†™å…¥æ•°æ®
 {
 	
 	char i;
 	for(i=0;i<8;i++)
 	{
-		SER=byte&(0x80>>i);         //ÒÀ´Î¶ÁÈ¡byteµÄ×î¸ßÎ»µ½×îµÍÎ»
-		SRCK=1;                     //¸øÒ»¸öÉÏÉıÑØ
+		SER=byte&(0x80>>i);         //ä¾æ¬¡è¯»å–byteçš„æœ€é«˜ä½åˆ°æœ€ä½ä½
+		SRCK=1;                     //ç»™ä¸€ä¸ªä¸Šå‡æ²¿
 		delay_ms(1);
-		SRCK=0;                     //ÇåÁãÎªÏÂÒ»´Î¶ÁÊı×ö×¼±¸
+		SRCK=0;                     //æ¸…é›¶ä¸ºä¸‹ä¸€æ¬¡è¯»æ•°åšå‡†å¤‡
 	}
-	RCK=1;                          //°Ë¸ö¶ş½øÖÆÎ»¶ÁÍê¸øÒ»¸öÉÏÉıÑØ²¢Î»Êä³ö
+	RCK=1;                          //å…«ä¸ªäºŒè¿›åˆ¶ä½è¯»å®Œç»™ä¸€ä¸ªä¸Šå‡æ²¿å¹¶ä½è¾“å‡º
 	delay_ms(1);
 	RCK=0;
 }
 
 void Column_display(unchar column,unchar byte)
 {
-	P0=~(0x80>>(column-1));          //Ò»ÁĞÒ»ÁĞÉ¨ÃèÏÔÊ¾
+	P0=~(0x80>>(column-1));          //ä¸€åˆ—ä¸€åˆ—æ‰«ææ˜¾ç¤º
 	_74HC595_writebyte(byte);
 	P0=0xff;
 	delay_ms(1);
@@ -58,13 +58,13 @@ void Column_display(unchar column,unchar byte)
 void main()
 {
 	
-	timing_init();
+	timing_init();            //å®šæ—¶ä¸­æ–­åˆå§‹åŒ–
 	RCK=0;
 	SRCK=0;
 	while(1)
 	{
 		
-		for(j=1;j<=8;j++)
+		for(j=1;j<=8;j++) //8x8ç‚¹é˜µå±ä¾æ¬¡æŒ‰åˆ—æ˜¾ç¤º
 		{
 			Column_display(j,a[j+c-1]);
 			P0=0xff;
